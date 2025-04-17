@@ -43,14 +43,12 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a 
-                  href="https://demo.docunimbus.io" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+                <Link 
+                  href="/demo-dms"
                   className="text-gray-600 hover:text-primary"
                 >
-                  Demo
-                </a>
+                  Interactive Demo
+                </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-gray-600 hover:text-primary">
