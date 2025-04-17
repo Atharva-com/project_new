@@ -29,7 +29,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 
 // Dynamically import react-pdf components to avoid SSR issues
-const PDFViewer = dynamic(
+const ReactPDF = dynamic<any>(
   () => import("react-pdf").then((mod) => {
     // Set up PDF.js worker
     const pdfjs = mod.pdfjs;
@@ -40,7 +40,8 @@ const PDFViewer = dynamic(
 );
 
 // Extract components from the dynamic import
-const { Document, Page } = PDFViewer;
+const Document = dynamic<any>(() => import("react-pdf").then(mod => mod.Document));
+const Page = dynamic<any>(() => import("react-pdf").then(mod => mod.Page));
 
 // Types
 type FileType = "pdf" | "image" | "doc" | "video" | "other";
@@ -276,8 +277,15 @@ const DocumentManagerComponent: React.FC = () => {
     setPageNumber(1);
   };
   
-  // Get pdfjs from the dynamic import
-  const pdfjs = PDFViewer.pdfjs;
+  // Get pdfjs from the dynamic import - will be available at runtime
+  const [pdfjs, setPdfjs] = useState<any>(null);
+  
+  useEffect(() => {
+    // Import pdfjs dynamically to avoid SSR issues
+    import("react-pdf").then((mod) => {
+      setPdfjs(mod.pdfjs);
+    });
+  }, []);
   
   // Navigation functions
   const goToPrevPage = () => {
@@ -491,22 +499,24 @@ const DocumentManagerComponent: React.FC = () => {
                   <div className="bg-white shadow-md rounded-md overflow-hidden">
                     {selectedFile.type === 'pdf' ? (
                       <div className="relative">
-                        <Document
-                          file={selectedFile.content || `https://cors-anywhere.herokuapp.com/https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf`}
-                          onLoadSuccess={onDocumentLoadSuccess}
-                          loading={
-                            <div className="flex justify-center items-center h-[400px]">
-                              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-                            </div>
-                          }
-                        >
-                          <Page 
-                            pageNumber={pageNumber} 
-                            scale={scale}
-                            renderTextLayer={false}
-                            renderAnnotationLayer={false}
-                          />
-                        </Document>
+                        {Document && Page && (
+                          <Document
+                            file={selectedFile.content || `https://cors-anywhere.herokuapp.com/https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf`}
+                            onLoadSuccess={onDocumentLoadSuccess}
+                            loading={
+                              <div className="flex justify-center items-center h-[400px]">
+                                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                              </div>
+                            }
+                          >
+                            <Page 
+                              pageNumber={pageNumber} 
+                              scale={scale}
+                              renderTextLayer={false}
+                              renderAnnotationLayer={false}
+                            />
+                          </Document>
+                        )}
                         
                         {/* PDF controls */}
                         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm rounded-full shadow-md px-4 py-2 flex items-center space-x-4">
