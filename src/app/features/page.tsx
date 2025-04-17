@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -70,12 +70,13 @@ import {
   XCircle,
   Info,
   HelpCircle,
-  ExternalLink
+  ExternalLink,
+  ChevronDown,
+  ArrowRight,
+  ArrowUp,
+  ArrowDown,
+  Check
 } from "lucide-react";
-
-export const metadata = {
-  title: "Complete Features List | DocuNimbus",
-};
 
 // Feature category type
 type FeatureCategory = {
@@ -84,6 +85,10 @@ type FeatureCategory = {
   description: string;
   icon: React.ReactNode;
   color: string;
+  bgColor: string;
+  borderColor: string;
+  iconBgColor: string;
+  iconColor: string;
 };
 
 // Feature item type
@@ -96,117 +101,200 @@ type FeatureItem = {
   isEnterprise?: boolean;
 };
 
-// Feature card component
-const FeatureCard = ({ icon, title, description, isNew, isEnterprise }: FeatureItem) => (
-  <motion.div 
-    className="card-custom relative overflow-hidden"
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5 }}
-  >
-    <div className="feature-icon">{icon}</div>
-    <div className="flex items-center mb-3">
-      <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
-      {isNew && (
-        <span className="ml-2 px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
-          New
-        </span>
-      )}
-      {isEnterprise && (
-        <span className="ml-2 px-2 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">
-          Enterprise
-        </span>
-      )}
-    </div>
-    <p className="text-gray-600">{description}</p>
-  </motion.div>
-);
+// Feature comparison type
+type FeatureComparison = {
+  category: string;
+  features: {
+    name: string;
+    docuNimbus: boolean;
+    traditional: boolean;
+    competitors: boolean;
+  }[];
+};
 
-// Category card component
+// Feature card component with hover effects
+const FeatureCard = ({ icon, title, description, isNew, isEnterprise, categoryId }: FeatureItem & { categoryId: string }) => {
+  // Get category colors based on categoryId
+  const getCategoryColors = () => {
+    const categoryMap: Record<string, { light: string, hover: string, iconBg: string }> = {
+      "document-management": { light: "bg-blue-50", hover: "hover:bg-blue-100", iconBg: "bg-blue-100" },
+      "security": { light: "bg-red-50", hover: "hover:bg-red-100", iconBg: "bg-red-100" },
+      "collaboration": { light: "bg-green-50", hover: "hover:bg-green-100", iconBg: "bg-green-100" },
+      "integration": { light: "bg-purple-50", hover: "hover:bg-purple-100", iconBg: "bg-purple-100" },
+      "automation": { light: "bg-amber-50", hover: "hover:bg-amber-100", iconBg: "bg-amber-100" },
+      "analytics": { light: "bg-indigo-50", hover: "hover:bg-indigo-100", iconBg: "bg-indigo-100" },
+      "infrastructure": { light: "bg-cyan-50", hover: "hover:bg-cyan-100", iconBg: "bg-cyan-100" },
+      "user-experience": { light: "bg-teal-50", hover: "hover:bg-teal-100", iconBg: "bg-teal-100" }
+    };
+    
+    return categoryMap[categoryId] || { light: "bg-gray-50", hover: "hover:bg-gray-100", iconBg: "bg-gray-100" };
+  };
+  
+  const colors = getCategoryColors();
+  
+  return (
+    <motion.div 
+      className={`relative overflow-hidden rounded-xl border border-gray-200 shadow-sm transition-all duration-300 ${colors.light} ${colors.hover} hover:shadow-md`}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+    >
+      <div className="p-6">
+        <div className={`p-3 rounded-full inline-flex mb-4 ${colors.iconBg}`}>
+          {icon}
+        </div>
+        
+        <div className="flex items-center mb-3">
+          <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+          <div className="flex ml-2 gap-1">
+            {isNew && (
+              <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
+                New
+              </span>
+            )}
+            {isEnterprise && (
+              <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">
+                Enterprise
+              </span>
+            )}
+          </div>
+        </div>
+        
+        <p className="text-gray-600">{description}</p>
+      </div>
+    </motion.div>
+  );
+};
+
+// Category card component with improved styling
 const CategoryCard = ({ 
   category, 
   isActive, 
-  onClick 
+  onClick,
+  count
 }: { 
   category: FeatureCategory; 
   isActive: boolean; 
   onClick: () => void;
+  count: number;
 }) => (
   <div 
-    className={`p-4 rounded-lg cursor-pointer transition-all duration-300 ${
+    className={`p-5 rounded-xl cursor-pointer transition-all duration-300 transform ${
       isActive 
-        ? `bg-${category.color}-50 border-2 border-${category.color}-500` 
-        : 'bg-white border-2 border-gray-100 hover:border-gray-200'
+        ? `${category.bgColor} border-2 ${category.borderColor} shadow-md scale-[1.02]` 
+        : 'bg-white border-2 border-gray-100 hover:border-gray-200 hover:shadow-sm'
     }`}
     onClick={onClick}
   >
-    <div className={`p-3 rounded-full inline-flex mb-3 bg-${category.color}-100`}>
-      {category.icon}
+    <div className={`p-3 rounded-full inline-flex mb-3 ${category.iconBgColor}`}>
+      <div className={category.iconColor}>
+        {category.icon}
+      </div>
     </div>
     <h3 className="text-lg font-semibold mb-1 text-gray-800">{category.title}</h3>
-    <p className="text-sm text-gray-600">{category.description}</p>
+    <div className="flex justify-between items-center">
+      <p className="text-sm text-gray-600">{category.description}</p>
+      <span className={`text-sm font-medium px-2 py-1 rounded-full ${
+        isActive ? 'bg-white/30 text-gray-800' : 'bg-gray-100 text-gray-600'
+      }`}>
+        {count}
+      </span>
+    </div>
   </div>
 );
 
 export default function FeaturesPage() {
-  // Define feature categories
+  // Define feature categories with enhanced styling
   const categories: FeatureCategory[] = [
     {
       id: "document-management",
       title: "Document Management",
       description: "Core document handling capabilities",
-      icon: <FileText className={`h-6 w-6 text-blue-600`} />,
-      color: "blue"
+      icon: <FileText className="h-6 w-6" />,
+      color: "blue",
+      bgColor: "bg-blue-50",
+      borderColor: "border-blue-500",
+      iconBgColor: "bg-blue-100",
+      iconColor: "text-blue-600"
     },
     {
       id: "security",
       title: "Security & Compliance",
       description: "Protection and regulatory features",
-      icon: <Shield className={`h-6 w-6 text-red-600`} />,
-      color: "red"
+      icon: <Shield className="h-6 w-6" />,
+      color: "red",
+      bgColor: "bg-red-50",
+      borderColor: "border-red-500",
+      iconBgColor: "bg-red-100",
+      iconColor: "text-red-600"
     },
     {
       id: "collaboration",
       title: "Collaboration & Sharing",
       description: "Team productivity features",
-      icon: <Users className={`h-6 w-6 text-green-600`} />,
-      color: "green"
+      icon: <Users className="h-6 w-6" />,
+      color: "green",
+      bgColor: "bg-green-50",
+      borderColor: "border-green-500",
+      iconBgColor: "bg-green-100",
+      iconColor: "text-green-600"
     },
     {
       id: "integration",
       title: "Integration & Connectivity",
       description: "Connect with other systems",
-      icon: <RefreshCw className={`h-6 w-6 text-purple-600`} />,
-      color: "purple"
+      icon: <RefreshCw className="h-6 w-6" />,
+      color: "purple",
+      bgColor: "bg-purple-50",
+      borderColor: "border-purple-500",
+      iconBgColor: "bg-purple-100",
+      iconColor: "text-purple-600"
     },
     {
       id: "automation",
       title: "Automation & Workflow",
       description: "Process automation capabilities",
-      icon: <Zap className={`h-6 w-6 text-amber-600`} />,
-      color: "amber"
+      icon: <Zap className="h-6 w-6" />,
+      color: "amber",
+      bgColor: "bg-amber-50",
+      borderColor: "border-amber-500",
+      iconBgColor: "bg-amber-100",
+      iconColor: "text-amber-600"
     },
     {
       id: "analytics",
       title: "Analytics & Reporting",
       description: "Insights and intelligence",
-      icon: <BarChart2 className={`h-6 w-6 text-indigo-600`} />,
-      color: "indigo"
+      icon: <BarChart2 className="h-6 w-6" />,
+      color: "indigo",
+      bgColor: "bg-indigo-50",
+      borderColor: "border-indigo-500",
+      iconBgColor: "bg-indigo-100",
+      iconColor: "text-indigo-600"
     },
     {
       id: "infrastructure",
       title: "Infrastructure & Performance",
       description: "System architecture features",
-      icon: <Server className={`h-6 w-6 text-cyan-600`} />,
-      color: "cyan"
+      icon: <Server className="h-6 w-6" />,
+      color: "cyan",
+      bgColor: "bg-cyan-50",
+      borderColor: "border-cyan-500",
+      iconBgColor: "bg-cyan-100",
+      iconColor: "text-cyan-600"
     },
     {
       id: "user-experience",
       title: "User Experience",
       description: "Interface and accessibility",
-      icon: <Sliders className={`h-6 w-6 text-teal-600`} />,
-      color: "teal"
+      icon: <Sliders className="h-6 w-6" />,
+      color: "teal",
+      bgColor: "bg-teal-50",
+      borderColor: "border-teal-500",
+      iconBgColor: "bg-teal-100",
+      iconColor: "text-teal-600"
     }
   ];
 
@@ -833,13 +921,117 @@ export default function FeaturesPage() {
     }
   ];
 
+  // Feature comparison data
+  const featureComparisons: FeatureComparison[] = [
+    {
+      category: "Core Capabilities",
+      features: [
+        { name: "Cloud-based Storage", docuNimbus: true, traditional: false, competitors: true },
+        { name: "Version Control", docuNimbus: true, traditional: false, competitors: true },
+        { name: "Full-text Search", docuNimbus: true, traditional: false, competitors: true },
+        { name: "Metadata Management", docuNimbus: true, traditional: false, competitors: true },
+        { name: "Mobile Access", docuNimbus: true, traditional: false, competitors: true },
+        { name: "Document Relationships", docuNimbus: true, traditional: false, competitors: false }
+      ]
+    },
+    {
+      category: "Security",
+      features: [
+        { name: "256-bit Encryption", docuNimbus: true, traditional: false, competitors: true },
+        { name: "Role-based Access Control", docuNimbus: true, traditional: true, competitors: true },
+        { name: "Multi-factor Authentication", docuNimbus: true, traditional: false, competitors: true },
+        { name: "Audit Trails", docuNimbus: true, traditional: false, competitors: true },
+        { name: "Information Rights Management", docuNimbus: true, traditional: false, competitors: false },
+        { name: "Geographic Restrictions", docuNimbus: true, traditional: false, competitors: false }
+      ]
+    },
+    {
+      category: "Collaboration",
+      features: [
+        { name: "Real-time Co-authoring", docuNimbus: true, traditional: false, competitors: false },
+        { name: "Secure External Sharing", docuNimbus: true, traditional: false, competitors: true },
+        { name: "Commenting & Discussion", docuNimbus: true, traditional: false, competitors: true },
+        { name: "Approval Workflows", docuNimbus: true, traditional: false, competitors: true },
+        { name: "Team Workspaces", docuNimbus: true, traditional: false, competitors: true },
+        { name: "Access Revocation", docuNimbus: true, traditional: false, competitors: false }
+      ]
+    },
+    {
+      category: "Intelligence",
+      features: [
+        { name: "AI-powered Classification", docuNimbus: true, traditional: false, competitors: false },
+        { name: "Intelligent OCR", docuNimbus: true, traditional: false, competitors: true },
+        { name: "Content Intelligence", docuNimbus: true, traditional: false, competitors: false },
+        { name: "Process Optimization", docuNimbus: true, traditional: false, competitors: false },
+        { name: "Anomaly Detection", docuNimbus: true, traditional: false, competitors: false },
+        { name: "Business Impact Analysis", docuNimbus: true, traditional: false, competitors: false }
+      ]
+    }
+  ];
+
   // State for active category
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  
+  // State for view mode (grid or list)
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  
+  // State for sort order
+  const [sortOrder, setSortOrder] = useState<"default" | "az" | "new">("default");
+  
+  // State for comparison view
+  const [showComparison, setShowComparison] = useState<boolean>(false);
+  
+  // State for expanded categories in list view
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
+  
+  // Toggle category expansion in list view
+  const toggleCategoryExpansion = (categoryId: string) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [categoryId]: !prev[categoryId]
+    }));
+  };
+  
+  // Initialize expanded categories on first render
+  useEffect(() => {
+    const initialExpanded = categories.reduce((acc, category) => {
+      acc[category.id] = true; // Start with all expanded
+      return acc;
+    }, {} as Record<string, boolean>);
+    
+    setExpandedCategories(initialExpanded);
+  }, []);
   
   // Filter features based on active category
   const filteredFeatures = activeCategory === "all" 
     ? allFeatures 
     : allFeatures.filter(feature => feature.categoryId === activeCategory);
+  
+  // Sort features based on sort order
+  const sortedFeatures = [...filteredFeatures].sort((a, b) => {
+    if (sortOrder === "az") {
+      return a.title.localeCompare(b.title);
+    } else if (sortOrder === "new") {
+      // New features first, then alphabetical
+      if (a.isNew && !b.isNew) return -1;
+      if (!a.isNew && b.isNew) return 1;
+      return a.title.localeCompare(b.title);
+    }
+    // Default sorting - by category then as they appear in the array
+    if (activeCategory === "all") {
+      return a.categoryId.localeCompare(b.categoryId) || 0;
+    }
+    return 0;
+  });
+  
+  // Group features by category for list view
+  const featuresByCategory = categories.map(category => {
+    const features = allFeatures.filter(feature => feature.categoryId === category.id);
+    return {
+      ...category,
+      features
+    };
+  });
 
   // Count features by category
   const featureCounts = categories.reduce((acc, category) => {
@@ -853,14 +1045,34 @@ export default function FeaturesPage() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.05
       }
+    }
+  };
+  
+  // Feature item animation variants
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.5 }
+    }
+  };
+  
+  // Header animation variants
+  const headerVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.7, ease: "easeOut" }
     }
   };
 
   return (
     <>
-      <section className="bg-gray-50 py-12">
+      <section className="bg-gradient-to-b from-gray-50 to-white py-16">
         <div className="container-custom">
           <div className="flex flex-col items-center">
             <nav className="flex py-3 mb-6" aria-label="Breadcrumb">
@@ -878,148 +1090,486 @@ export default function FeaturesPage() {
                 </li>
               </ol>
             </nav>
-            <motion.h1 
-              className="page-title text-center"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+            
+            <motion.div 
+              className="text-center max-w-4xl"
+              initial="hidden"
+              animate="visible"
+              variants={headerVariants}
             >
-              Complete Features List
-            </motion.h1>
-            <motion.p 
-              className="text-xl text-center text-gray-600 max-w-3xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              Explore the comprehensive set of features that make DocuNimbus the most powerful 
-              document management solution for modern organizations.
-            </motion.p>
+              <h1 className="text-5xl font-bold mb-6 text-gray-800 tracking-tight">
+                Complete Features List
+              </h1>
+              <p className="text-xl text-gray-600 mb-8">
+                Explore the comprehensive set of features that make DocuNimbus the most powerful 
+                document management solution for modern organizations.
+              </p>
+              
+              <div className="flex flex-wrap justify-center gap-4">
+                <button 
+                  onClick={() => setShowComparison(false)}
+                  className={`px-5 py-2.5 rounded-lg font-medium transition-all ${
+                    !showComparison 
+                      ? 'bg-primary text-white shadow-md' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Feature Explorer
+                </button>
+                <button 
+                  onClick={() => setShowComparison(true)}
+                  className={`px-5 py-2.5 rounded-lg font-medium transition-all ${
+                    showComparison 
+                      ? 'bg-primary text-white shadow-md' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Comparison Chart
+                </button>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      <section className="page-section">
-        <div className="container-custom">
-          <div className="mb-12">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="section-title mb-0">Feature Categories</h2>
-              <div className="flex items-center">
-                <span className="text-sm text-gray-500 mr-2">Legend:</span>
-                <span className="inline-flex items-center mr-3">
-                  <span className="w-3 h-3 rounded-full bg-blue-100 border border-blue-500 mr-1"></span>
-                  <span className="text-sm text-gray-600">New</span>
-                </span>
-                <span className="inline-flex items-center">
-                  <span className="w-3 h-3 rounded-full bg-purple-100 border border-purple-500 mr-1"></span>
-                  <span className="text-sm text-gray-600">Enterprise</span>
-                </span>
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div 
-                className={`p-4 rounded-lg cursor-pointer transition-all duration-300 ${
-                  activeCategory === "all" 
-                    ? 'bg-primary text-white' 
-                    : 'bg-white border-2 border-gray-100 hover:border-gray-200'
-                }`}
-                onClick={() => setActiveCategory("all")}
-              >
-                <div className={`p-3 rounded-full inline-flex mb-3 ${
-                  activeCategory === "all" ? 'bg-white/20' : 'bg-primary/10'
-                }`}>
-                  <Layers className={`h-6 w-6 ${
-                    activeCategory === "all" ? 'text-white' : 'text-primary'
-                  }`} />
+      {!showComparison ? (
+        <section className="page-section">
+          <div className="container-custom">
+            <div className="mb-12">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="section-title mb-0">Feature Categories</h2>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center">
+                    <span className="text-sm text-gray-500 mr-2">Legend:</span>
+                    <span className="inline-flex items-center mr-3">
+                      <span className="w-3 h-3 rounded-full bg-blue-100 border border-blue-500 mr-1"></span>
+                      <span className="text-sm text-gray-600">New</span>
+                    </span>
+                    <span className="inline-flex items-center">
+                      <span className="w-3 h-3 rounded-full bg-purple-100 border border-purple-500 mr-1"></span>
+                      <span className="text-sm text-gray-600">Enterprise</span>
+                    </span>
+                  </div>
+                  
+                  <div className="flex bg-gray-100 rounded-lg p-1">
+                    <button
+                      onClick={() => setViewMode("grid")}
+                      className={`p-2 rounded-md ${viewMode === "grid" ? "bg-white shadow-sm" : "text-gray-600 hover:bg-gray-200"}`}
+                      aria-label="Grid view"
+                    >
+                      <Layers size={18} />
+                    </button>
+                    <button
+                      onClick={() => setViewMode("list")}
+                      className={`p-2 rounded-md ${viewMode === "list" ? "bg-white shadow-sm" : "text-gray-600 hover:bg-gray-200"}`}
+                      aria-label="List view"
+                    >
+                      <Layers size={18} />
+                    </button>
+                  </div>
                 </div>
-                <h3 className={`text-lg font-semibold mb-1 ${
-                  activeCategory === "all" ? 'text-white' : 'text-gray-800'
-                }`}>All Features</h3>
-                <p className={`text-sm ${
-                  activeCategory === "all" ? 'text-white/80' : 'text-gray-600'
-                }`}>
-                  {allFeatures.length} total features
-                </p>
               </div>
               
-              {categories.map(category => (
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div 
-                  key={category.id}
-                  className={`p-4 rounded-lg cursor-pointer transition-all duration-300 ${
-                    activeCategory === category.id 
-                      ? `bg-${category.color}-50 border-2 border-${category.color}-500` 
-                      : 'bg-white border-2 border-gray-100 hover:border-gray-200'
+                  className={`p-5 rounded-xl cursor-pointer transition-all duration-300 transform ${
+                    activeCategory === "all" 
+                      ? 'bg-primary text-white shadow-md scale-[1.02]' 
+                      : 'bg-white border-2 border-gray-100 hover:border-gray-200 hover:shadow-sm'
                   }`}
-                  onClick={() => setActiveCategory(category.id)}
+                  onClick={() => setActiveCategory("all")}
                 >
-                  <div className={`p-3 rounded-full inline-flex mb-3 bg-${category.color}-100`}>
-                    {category.icon}
+                  <div className={`p-3 rounded-full inline-flex mb-3 ${
+                    activeCategory === "all" ? 'bg-white/20' : 'bg-primary/10'
+                  }`}>
+                    <Layers className={`h-6 w-6 ${
+                      activeCategory === "all" ? 'text-white' : 'text-primary'
+                    }`} />
                   </div>
-                  <h3 className="text-lg font-semibold mb-1 text-gray-800">{category.title}</h3>
-                  <p className="text-sm text-gray-600">
-                    {featureCounts[category.id]} features
-                  </p>
+                  <h3 className={`text-lg font-semibold mb-1 ${
+                    activeCategory === "all" ? 'text-white' : 'text-gray-800'
+                  }`}>All Features</h3>
+                  <div className="flex justify-between items-center">
+                    <p className={`text-sm ${
+                      activeCategory === "all" ? 'text-white/80' : 'text-gray-600'
+                    }`}>
+                      Complete feature set
+                    </p>
+                    <span className={`text-sm font-medium px-2 py-1 rounded-full ${
+                      activeCategory === "all" ? 'bg-white/30 text-white' : 'bg-gray-100 text-gray-600'
+                    }`}>
+                      {allFeatures.length}
+                    </span>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
-          
-          <motion.div 
-            className="mb-12"
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-          >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="section-title mb-0">
-                {activeCategory === "all" 
-                  ? "All Features" 
-                  : categories.find(c => c.id === activeCategory)?.title || "Features"}
-              </h2>
-              <div className="text-gray-500">
-                Showing {filteredFeatures.length} features
+                
+                {categories.map(category => (
+                  <CategoryCard 
+                    key={category.id}
+                    category={category}
+                    isActive={activeCategory === category.id}
+                    onClick={() => setActiveCategory(category.id)}
+                    count={featureCounts[category.id]}
+                  />
+                ))}
               </div>
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {filteredFeatures.map((feature, index) => (
-                <FeatureCard
-                  key={`${feature.categoryId}-${index}`}
-                  {...feature}
-                />
-              ))}
-            </div>
-          </motion.div>
-          
-          <div className="bg-gray-50 rounded-lg p-8 border border-gray-200">
-            <div className="max-w-3xl mx-auto text-center">
-              <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                Need a Custom Feature?
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Don't see what you're looking for? Our team can develop custom features 
-                tailored to your organization's specific requirements.
-              </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link 
-                  href="/contact" 
-                  className="btn-primary inline-flex items-center justify-center"
-                >
-                  Contact Our Team
-                </Link>
-                <Link 
-                  href="/demo-dms" 
-                  className="btn-outline inline-flex items-center justify-center"
-                >
-                  <span>Try Interactive Demo</span>
-                  <ExternalLink className="ml-2 h-5 w-5" />
-                </Link>
+            {viewMode === "grid" ? (
+              <motion.div 
+                className="mb-12"
+                initial="hidden"
+                animate="visible"
+                variants={containerVariants}
+              >
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="section-title mb-0">
+                    {activeCategory === "all" 
+                      ? "All Features" 
+                      : categories.find(c => c.id === activeCategory)?.title || "Features"}
+                  </h2>
+                  <div className="flex items-center gap-4">
+                    <div className="text-gray-500">
+                      Showing {filteredFeatures.length} features
+                    </div>
+                    
+                    <div className="relative">
+                      <select
+                        value={sortOrder}
+                        onChange={(e) => setSortOrder(e.target.value as any)}
+                        className="appearance-none bg-white border border-gray-300 rounded-lg py-2 pl-4 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      >
+                        <option value="default">Default Order</option>
+                        <option value="az">Alphabetical (A-Z)</option>
+                        <option value="new">New Features First</option>
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none h-4 w-4" />
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {sortedFeatures.map((feature, index) => (
+                    <motion.div key={`${feature.categoryId}-${index}`} variants={itemVariants}>
+                      <FeatureCard {...feature} />
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div 
+                className="mb-12"
+                initial="hidden"
+                animate="visible"
+                variants={containerVariants}
+              >
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="section-title mb-0">Features by Category</h2>
+                  <div className="flex items-center gap-4">
+                    <div className="text-gray-500">
+                      {allFeatures.length} total features
+                    </div>
+                    
+                    <div className="relative">
+                      <select
+                        value={sortOrder}
+                        onChange={(e) => setSortOrder(e.target.value as any)}
+                        className="appearance-none bg-white border border-gray-300 rounded-lg py-2 pl-4 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                      >
+                        <option value="default">Default Order</option>
+                        <option value="az">Alphabetical (A-Z)</option>
+                        <option value="new">New Features First</option>
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none h-4 w-4" />
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-6">
+                  {featuresByCategory.map((category) => (
+                    <motion.div 
+                      key={category.id}
+                      className="border border-gray-200 rounded-xl overflow-hidden"
+                      variants={itemVariants}
+                    >
+                      <div 
+                        className={`flex justify-between items-center p-5 cursor-pointer ${category.bgColor}`}
+                        onClick={() => toggleCategoryExpansion(category.id)}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`p-2 rounded-full ${category.iconBgColor}`}>
+                            <div className={category.iconColor}>
+                              {category.icon}
+                            </div>
+                          </div>
+                          <div>
+                            <h3 className="text-lg font-semibold text-gray-800">{category.title}</h3>
+                            <p className="text-sm text-gray-600">{category.description}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="bg-white px-3 py-1 rounded-full text-sm font-medium text-gray-700">
+                            {category.features.length} features
+                          </span>
+                          {expandedCategories[category.id] ? (
+                            <ChevronDown className="h-5 w-5 text-gray-600" />
+                          ) : (
+                            <ChevronRight className="h-5 w-5 text-gray-600" />
+                          )}
+                        </div>
+                      </div>
+                      
+                      {expandedCategories[category.id] && (
+                        <div className="bg-white">
+                          <table className="w-full">
+                            <thead className="bg-gray-50 border-y border-gray-200">
+                              <tr>
+                                <th className="py-3 px-4 text-left text-sm font-medium text-gray-700">Feature</th>
+                                <th className="py-3 px-4 text-left text-sm font-medium text-gray-700 w-32">Type</th>
+                                <th className="py-3 px-4 text-left text-sm font-medium text-gray-700">Description</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-200">
+                              {category.features.map((feature, index) => (
+                                <tr 
+                                  key={`${category.id}-${index}`}
+                                  className="hover:bg-gray-50 transition-colors"
+                                >
+                                  <td className="py-4 px-4">
+                                    <div className="flex items-center gap-3">
+                                      <div className={`p-2 rounded-full ${category.iconBgColor}`}>
+                                        {feature.icon}
+                                      </div>
+                                      <span className="font-medium text-gray-800">{feature.title}</span>
+                                    </div>
+                                  </td>
+                                  <td className="py-4 px-4">
+                                    <div className="flex gap-1">
+                                      {feature.isNew && (
+                                        <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
+                                          New
+                                        </span>
+                                      )}
+                                      {feature.isEnterprise && (
+                                        <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">
+                                          Enterprise
+                                        </span>
+                                      )}
+                                      {!feature.isNew && !feature.isEnterprise && (
+                                        <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
+                                          Standard
+                                        </span>
+                                      )}
+                                    </div>
+                                  </td>
+                                  <td className="py-4 px-4 text-gray-600">
+                                    {feature.description}
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+            
+            <div className="bg-gray-50 rounded-xl p-8 border border-gray-200 shadow-sm">
+              <div className="max-w-3xl mx-auto text-center">
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                  Need a Custom Feature?
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  Don't see what you're looking for? Our team can develop custom features 
+                  tailored to your organization's specific requirements.
+                </p>
+                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                  <Link 
+                    href="/contact" 
+                    className="btn-primary inline-flex items-center justify-center"
+                  >
+                    Contact Our Team
+                  </Link>
+                  <Link 
+                    href="/demo-dms" 
+                    className="btn-outline inline-flex items-center justify-center"
+                  >
+                    <span>Try Interactive Demo</span>
+                    <ExternalLink className="ml-2 h-5 w-5" />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : (
+        <section className="page-section">
+          <div className="container-custom">
+            <motion.div 
+              className="mb-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="section-title mb-0">Feature Comparison</h2>
+                <div className="text-gray-500">
+                  See how DocuNimbus compares to alternatives
+                </div>
+              </div>
+              
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-8">
+                <div className="p-6 bg-gray-50 border-b border-gray-200">
+                  <h3 className="text-xl font-semibold text-gray-800">DocuNimbus vs. Traditional & Competitor Solutions</h3>
+                  <p className="text-gray-600 mt-2">
+                    Compare our comprehensive feature set with traditional document management systems and other cloud competitors.
+                  </p>
+                </div>
+                
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-gray-50">
+                        <th className="py-4 px-6 text-left text-sm font-medium text-gray-700 border-b border-gray-200 w-1/3">Feature</th>
+                        <th className="py-4 px-6 text-center text-sm font-medium text-primary border-b border-gray-200">
+                          <div className="flex flex-col items-center">
+                            <Cloud className="h-6 w-6 mb-1" />
+                            <span>DocuNimbus</span>
+                          </div>
+                        </th>
+                        <th className="py-4 px-6 text-center text-sm font-medium text-gray-700 border-b border-gray-200">
+                          <div className="flex flex-col items-center">
+                            <Folder className="h-6 w-6 mb-1" />
+                            <span>Traditional DMS</span>
+                          </div>
+                        </th>
+                        <th className="py-4 px-6 text-center text-sm font-medium text-gray-700 border-b border-gray-200">
+                          <div className="flex flex-col items-center">
+                            <Cloud className="h-6 w-6 mb-1" />
+                            <span>Cloud Competitors</span>
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {featureComparisons.map((category, categoryIndex) => (
+                        <React.Fragment key={`category-${categoryIndex}`}>
+                          <tr className="bg-gray-50">
+                            <td colSpan={4} className="py-3 px-6 font-semibold text-gray-800 border-t border-b border-gray-200">
+                              {category.category}
+                            </td>
+                          </tr>
+                          {category.features.map((feature, featureIndex) => (
+                            <tr 
+                              key={`feature-${categoryIndex}-${featureIndex}`}
+                              className="hover:bg-gray-50 transition-colors"
+                            >
+                              <td className="py-4 px-6 border-b border-gray-200 font-medium text-gray-800">
+                                {feature.name}
+                              </td>
+                              <td className="py-4 px-6 text-center border-b border-gray-200">
+                                {feature.docuNimbus ? (
+                                  <div className="flex justify-center">
+                                    <div className="bg-green-100 p-1 rounded-full">
+                                      <Check className="h-5 w-5 text-green-600" />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="flex justify-center">
+                                    <div className="bg-red-100 p-1 rounded-full">
+                                      <XCircle className="h-5 w-5 text-red-600" />
+                                    </div>
+                                  </div>
+                                )}
+                              </td>
+                              <td className="py-4 px-6 text-center border-b border-gray-200">
+                                {feature.traditional ? (
+                                  <div className="flex justify-center">
+                                    <div className="bg-green-100 p-1 rounded-full">
+                                      <Check className="h-5 w-5 text-green-600" />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="flex justify-center">
+                                    <div className="bg-red-100 p-1 rounded-full">
+                                      <XCircle className="h-5 w-5 text-red-600" />
+                                    </div>
+                                  </div>
+                                )}
+                              </td>
+                              <td className="py-4 px-6 text-center border-b border-gray-200">
+                                {feature.competitors ? (
+                                  <div className="flex justify-center">
+                                    <div className="bg-green-100 p-1 rounded-full">
+                                      <Check className="h-5 w-5 text-green-600" />
+                                    </div>
+                                  </div>
+                                ) : (
+                                  <div className="flex justify-center">
+                                    <div className="bg-red-100 p-1 rounded-full">
+                                      <XCircle className="h-5 w-5 text-red-600" />
+                                    </div>
+                                  </div>
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </React.Fragment>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              
+              <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
+                <div className="flex items-start">
+                  <div className="bg-blue-100 p-2 rounded-full mr-4">
+                    <Info className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-blue-800 mb-2">Why DocuNimbus Stands Out</h4>
+                    <p className="text-blue-700">
+                      DocuNimbus combines the best of both worlds: the security and control of traditional document management systems with the 
+                      accessibility and modern features of cloud solutions. Our platform goes beyond competitors with advanced AI capabilities, 
+                      superior collaboration tools, and enterprise-grade security that adapts to your organization's specific needs.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+            
+            <div className="bg-gray-50 rounded-xl p-8 border border-gray-200 shadow-sm">
+              <div className="max-w-3xl mx-auto text-center">
+                <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                  Ready to Experience the Difference?
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  See DocuNimbus in action with our interactive demo or contact our team for a personalized demonstration 
+                  tailored to your organization's specific needs.
+                </p>
+                <div className="flex flex-col sm:flex-row justify-center gap-4">
+                  <Link 
+                    href="/demo-dms" 
+                    className="btn-primary inline-flex items-center justify-center"
+                  >
+                    <span>Try Interactive Demo</span>
+                    <ExternalLink className="ml-2 h-5 w-5" />
+                  </Link>
+                  <Link 
+                    href="/contact" 
+                    className="btn-outline inline-flex items-center justify-center"
+                  >
+                    Request Custom Demo
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section className="page-section bg-primary text-white">
         <div className="container-custom">
