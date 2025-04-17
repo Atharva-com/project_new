@@ -8,13 +8,13 @@ export default function DemoPage() {
   const router = useRouter();
   
   useEffect(() => {
-    // Redirect to external demo URL after a short delay
+    // Redirect to our internal demo page after a short delay
     const timer = setTimeout(() => {
-      window.location.href = "https://demo.docunimbus.io";
-    }, 2000);
+      router.push("/demo-dms");
+    }, 1500);
     
     return () => clearTimeout(timer);
-  }, []);
+  }, [router]);
   
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] py-16">
@@ -22,15 +22,13 @@ export default function DemoPage() {
         <div className="flex justify-center mb-6">
           <Loader2 className="h-12 w-12 text-primary animate-spin" />
         </div>
-        <h1 className="text-3xl font-bold mb-4">Redirecting to DocuNimbus Demo</h1>
+        <h1 className="text-3xl font-bold mb-4">Loading DocuNimbus Demo</h1>
         <p className="text-xl text-gray-600 mb-8 max-w-md mx-auto">
-          You are being redirected to our interactive demo environment.
+          Preparing your interactive demo experience...
           If you are not redirected automatically, please click the button below.
         </p>
         <a 
-          href="https://demo.docunimbus.io" 
-          target="_blank" 
-          rel="noopener noreferrer"
+          href="/demo-dms" 
           className="btn-primary inline-flex items-center"
         >
           Launch Demo Now

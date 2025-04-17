@@ -40,14 +40,12 @@ export const Navbar = () => {
               {item.label}
             </Link>
           ))}
-          <a 
-            href="https://demo.docunimbus.io" 
-            target="_blank" 
-            rel="noopener noreferrer"
+          <Link 
+            href="/demo-dms"
             className="text-gray-600 hover:text-primary transition-colors"
           >
             Demo
-          </a>
+          </Link>
         </nav>
 
         {/* Mobile Navigation Toggle */}
@@ -74,15 +72,13 @@ export const Navbar = () => {
                 {item.label}
               </Link>
             ))}
-            <a 
-              href="https://demo.docunimbus.io" 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <Link 
+              href="/demo-dms"
               className="text-gray-600"
               onClick={() => setIsOpen(false)}
             >
               Demo
-            </a>
+            </Link>
           </div>
         </nav>
       )}

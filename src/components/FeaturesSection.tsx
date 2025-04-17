@@ -68,14 +68,12 @@ export const FeaturesSection = () => {
             <p className="opacity-90 mb-6">
               Try our interactive demo to see how DocuNimbus can transform your document workflows.
             </p>
-            <a 
-              href="https://demo.docunimbus.io" 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <Link 
+              href="/demo-dms"
               className="bg-white text-primary hover:bg-gray-100 px-6 py-3 rounded-md font-medium transition-colors inline-flex items-center"
             >
-              Launch Demo
-            </a>
+              Try Interactive Demo
+            </Link>
           </div>
           <div className="md:w-1/2">
             <Image 

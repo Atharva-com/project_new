@@ -15,15 +15,13 @@ export const CTASection = () => {
             Try our interactive demo or contact our team for personalized assistance.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a 
-              href="https://demo.docunimbus.io" 
-              target="_blank" 
-              rel="noopener noreferrer"
+            <Link 
+              href="/demo-dms"
               className="bg-white text-primary hover:bg-gray-100 px-6 py-3 rounded-md font-medium transition-colors flex items-center justify-center"
             >
               <ExternalLink className="mr-2 h-5 w-5" />
-              Launch Demo
-            </a>
+              Try Interactive Demo
+            </Link>
             <Link 
               href="/contact" 
               className="bg-primary-foreground/20 hover:bg-primary-foreground/30 border border-white/30 text-white px-6 py-3 rounded-md font-medium transition-colors flex items-center justify-center"

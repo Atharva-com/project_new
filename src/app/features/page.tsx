@@ -220,8 +220,8 @@ export default function FeaturesPage() {
               Request a demo or explore our comprehensive documentation.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/demo" className="bg-white text-primary hover:bg-gray-100 px-6 py-3 rounded-md font-medium transition-colors">
-                Access Demo
+              <Link href="/demo-dms" className="bg-white text-primary hover:bg-gray-100 px-6 py-3 rounded-md font-medium transition-colors">
+                Try Interactive Demo
               </Link>
               <Link href="/training" className="bg-primary-foreground/20 hover:bg-primary-foreground/30 border border-white/30 text-white px-6 py-3 rounded-md font-medium transition-colors">
                 View Training Resources

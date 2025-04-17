@@ -20,15 +20,13 @@ export const Hero = () => {
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <a 
-                href="https://demo.docunimbus.io" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <Link 
+                href="/demo-dms" 
                 className="btn-primary flex items-center"
               >
-                <span>Launch Demo</span>
+                <span>Try Interactive Demo</span>
                 <ExternalLink className="ml-2 h-5 w-5" />
-              </a>
+              </Link>
               
               <Link href="/contact" className="btn-outline">
                 Contact Us

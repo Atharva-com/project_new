@@ -61,14 +61,12 @@ export const StatsSection = () => {
                 See how DocuNimbus compares to traditional document management systems with our interactive demo.
                 Discover the intuitive interface and powerful features that make document management effortless.
               </p>
-              <a 
-                href="https://demo.docunimbus.io" 
-                target="_blank" 
-                rel="noopener noreferrer"
+              <Link 
+                href="/demo-dms"
                 className="btn-primary inline-block"
               >
-                Try the Demo
-              </a>
+                Try Interactive Demo
+              </Link>
             </div>
             <div className="md:w-1/2">
               <Image 

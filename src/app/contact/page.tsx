@@ -117,14 +117,12 @@ export default function ContactPage() {
                 <p className="opacity-90 mb-4">
                   Experience DocuNimbus firsthand with our interactive demo environment.
                 </p>
-                <a 
-                  href="https://demo.docunimbus.io" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
+                <Link 
+                  href="/demo-dms"
                   className="bg-white text-primary hover:bg-gray-100 px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center text-sm"
                 >
-                  Launch Demo
-                </a>
+                  Try Interactive Demo
+                </Link>
               </div>
             </div>
             
@@ -382,14 +380,12 @@ export default function ContactPage() {
               Try our interactive demo today or contact us for a personalized consultation.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <a 
-                href="https://demo.docunimbus.io" 
-                target="_blank" 
-                rel="noopener noreferrer"
+              <Link 
+                href="/demo-dms"
                 className="bg-white text-primary hover:bg-gray-100 px-6 py-3 rounded-md font-medium transition-colors"
               >
-                Launch Demo
-              </a>
+                Try Interactive Demo
+              </Link>
               <button
                 onClick={() => {
                   const contactForm = document.getElementById('name');
