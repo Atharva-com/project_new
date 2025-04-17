@@ -1,7 +1,7 @@
 import React from "react";
 import "@/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
+import { Inter } from "next/font/google";
 import { type Metadata } from "next";
 import {
   AnalyticsTracker,
@@ -10,6 +10,8 @@ import {
   Branding,
 } from "@/utils/creatr.scripts";
 import { GlobalErrorHandler } from "@/utils/global-error-handler";
+import { Navbar } from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 
 // Create a proper React component wrapper
 const ErrorBoundaryWrapper: React.FC<{ children: React.ReactNode }> = (
@@ -20,6 +22,8 @@ const ErrorBoundaryWrapper: React.FC<{ children: React.ReactNode }> = (
   return <ErrorBoundaryComponent {...props} />;
 };
 
+const inter = Inter({ subsets: ["latin"] });
+
 export const viewport = {
   width: "device-width",
   initialScale: 1,
@@ -28,15 +32,14 @@ export const viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Creatr",
-    template: "%s | Creatr",
+    default: "Cloud DMS",
+    template: "%s | Cloud DMS",
   },
-  description: "A modern web application built with Next.js and TypeScript",
-  applicationName: "Creatr",
-  keywords: ["next.js", "react", "typescript", "web application"],
-  authors: [{ name: "Creatr Team" }],
-  creator: "Creatr Team",
-  publisher: "Creatr Team",
+  description: "Cloud-Based Document Management System Implementation Project",
+  applicationName: "Cloud DMS",
+  keywords: ["document management", "cloud storage", "DMS", "document security", "file management"],
+  authors: [{ name: "Ranjith Reddy Kondapur" }],
+  creator: "Cumberlands University",
   icons: {
     icon: [
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
@@ -51,7 +54,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Creatr",
+    title: "Cloud DMS",
   },
   formatDetection: {
     telephone: false,
@@ -62,16 +65,19 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
-        {" "}
+    <html lang="en" className={inter.className}>
+      <body className="min-h-screen flex flex-col">
         <GlobalErrorHandler />
         <DOMInspector>
           <ErrorBoundaryWrapper>
-            {children}
+            <Navbar />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Footer />
             <Branding />
           </ErrorBoundaryWrapper>
-          <AnalyticsTracker siteKey="${siteKey}" />
+          <AnalyticsTracker siteKey="cloud-dms" />
         </DOMInspector>
       </body>
     </html>
