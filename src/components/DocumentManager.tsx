@@ -29,15 +29,18 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 
 // Dynamically import react-pdf components to avoid SSR issues
-const { Document, Page, pdfjs } = dynamic(
+const PDFViewer = dynamic(
   () => import("react-pdf").then((mod) => {
     // Set up PDF.js worker
     const pdfjs = mod.pdfjs;
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-    return { Document: mod.Document, Page: mod.Page, pdfjs };
+    return mod;
   }),
   { ssr: false }
 );
+
+// Extract components from the dynamic import
+const { Document, Page } = PDFViewer;
 
 // Types
 type FileType = "pdf" | "image" | "doc" | "video" | "other";
@@ -272,6 +275,9 @@ const DocumentManagerComponent: React.FC = () => {
     setNumPages(numPages);
     setPageNumber(1);
   };
+  
+  // Get pdfjs from the dynamic import
+  const pdfjs = PDFViewer.pdfjs;
   
   // Navigation functions
   const goToPrevPage = () => {
