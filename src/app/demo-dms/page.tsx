@@ -1,9 +1,25 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
-import { ChevronRight, ExternalLink } from "lucide-react";
-import { DocumentManager } from "@/components/DocumentManager";
+import { ChevronRight, ExternalLink, Loader2 } from "lucide-react";
+import dynamic from "next/dynamic";
+
+// Dynamically import DocumentManager with no SSR
+const DocumentManager = dynamic(
+  () => import("@/components/DocumentManager").then((mod) => mod.DocumentManager),
+  { 
+    ssr: false,
+    loading: () => (
+      <div className="flex justify-center items-center h-[600px] bg-white rounded-xl shadow-lg border border-gray-200">
+        <div className="flex flex-col items-center">
+          <Loader2 className="h-12 w-12 text-primary animate-spin mb-4" />
+          <p className="text-gray-600">Loading document manager...</p>
+        </div>
+      </div>
+    )
+  }
+);
 
 export default function DemoDMSPage() {
   return (

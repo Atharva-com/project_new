@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
+import dynamic from "next/dynamic";
 import { useDropzone } from "react-dropzone";
 import { 
   Folder, 
@@ -28,8 +28,16 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Set up PDF.js worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+// Dynamically import react-pdf components to avoid SSR issues
+const { Document, Page, pdfjs } = dynamic(
+  () => import("react-pdf").then((mod) => {
+    // Set up PDF.js worker
+    const pdfjs = mod.pdfjs;
+    pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+    return { Document: mod.Document, Page: mod.Page, pdfjs };
+  }),
+  { ssr: false }
+);
 
 // Types
 type FileType = "pdf" | "image" | "doc" | "video" | "other";
@@ -166,7 +174,10 @@ const FileIcon: React.FC<{ type: FileType, className?: string }> = ({ type, clas
   }
 };
 
-export const DocumentManager: React.FC = () => {
+// Export the component
+export { DocumentManagerComponent as DocumentManager };
+
+const DocumentManagerComponent: React.FC = () => {
   const [folders, setFolders] = useState<Folder[]>(initialFolders);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFile, setSelectedFile] = useState<DocFile | null>(null);
@@ -364,6 +375,24 @@ export const DocumentManager: React.FC = () => {
     ));
   };
 
+  // Handle the case where Document/Page components might not be available yet
+  const [isClientSide, setIsClientSide] = useState(false);
+  
+  useEffect(() => {
+    setIsClientSide(true);
+  }, []);
+  
+  if (!isClientSide) {
+    return (
+      <div className="flex justify-center items-center h-[600px] bg-white rounded-xl shadow-lg border border-gray-200">
+        <div className="flex flex-col items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
+          <p className="text-gray-600">Loading document manager...</p>
+        </div>
+      </div>
+    );
+  }
+  
   return (
     <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
       <div className="flex h-[600px]">
