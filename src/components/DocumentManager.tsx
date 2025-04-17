@@ -34,7 +34,7 @@ const ReactPDF = dynamic<any>(
     // Set up PDF.js worker
     const pdfjs = mod.pdfjs;
     pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
-    return mod;
+    return { default: () => null };
   }),
   { ssr: false }
 );
