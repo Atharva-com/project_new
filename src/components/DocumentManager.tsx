@@ -151,18 +151,18 @@ const initialFolders: Folder[] = [
 ];
 
 // File icon component
-const FileIcon: React.FC<{ type: FileType }> = ({ type }) => {
+const FileIcon: React.FC<{ type: FileType, className?: string }> = ({ type, className }) => {
   switch (type) {
     case "pdf":
-      return <FileText className="text-red-500" />;
+      return <FileText className={className || "text-red-500"} />;
     case "image":
-      return <ImageIcon className="text-blue-500" />;
+      return <ImageIcon className={className || "text-blue-500"} />;
     case "doc":
-      return <File className="text-blue-700" />;
+      return <File className={className || "text-blue-700"} />;
     case "video":
-      return <Video className="text-purple-500" />;
+      return <Video className={className || "text-purple-500"} />;
     default:
-      return <File className="text-gray-500" />;
+      return <File className={className || "text-gray-500"} />;
   }
 };
 
