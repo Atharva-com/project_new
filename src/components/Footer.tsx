@@ -1,17 +1,20 @@
 import React from "react";
 import Link from "next/link";
-import { Facebook, Twitter, Linkedin, Mail, Phone } from "lucide-react";
+import { Facebook, Twitter, Linkedin, Mail, Phone, Cloud } from "lucide-react";
 
 export const Footer = () => {
   return (
     <footer className="bg-gray-50 pt-12 pb-8 border-t border-gray-200">
       <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-gray-800">Cloud DMS</h3>
+            <div className="flex items-center mb-4">
+              <Cloud className="w-6 h-6 text-primary mr-2" />
+              <h3 className="text-lg font-semibold text-gray-800">DocuNimbus</h3>
+            </div>
             <p className="text-gray-600 mb-4">
-              Optimizing document management through an advanced cloud-based system that enhances
-              efficiency, security, and accessibility.
+              Smart cloud document solution that enhances efficiency, security, and accessibility.
+              Access. Organize. Secure.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-primary">
@@ -30,49 +33,28 @@ export const Footer = () => {
             <h3 className="text-lg font-semibold mb-4 text-gray-800">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/about" className="text-gray-600 hover:text-primary">
-                  About the Project
+                <Link href="/" className="text-gray-600 hover:text-primary">
+                  Home
                 </Link>
               </li>
               <li>
                 <Link href="/features" className="text-gray-600 hover:text-primary">
-                  Features & Benefits
+                  Features
                 </Link>
               </li>
               <li>
-                <Link href="/features" className="text-gray-600 hover:text-primary">
-                  System Features
-                </Link>
-              </li>
-              <li>
-                <Link href="/training" className="text-gray-600 hover:text-primary">
-                  Training Resources
-                </Link>
-              </li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="text-lg font-semibold mb-4 text-gray-800">Help & Support</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/training#faq" className="text-gray-600 hover:text-primary">
-                  FAQs
-                </Link>
+                <a 
+                  href="https://demo.docunimbus.io" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-primary"
+                >
+                  Demo
+                </a>
               </li>
               <li>
                 <Link href="/contact" className="text-gray-600 hover:text-primary">
-                  Contact Support
-                </Link>
-              </li>
-              <li>
-                <Link href="/training#guides" className="text-gray-600 hover:text-primary">
-                  User Guides
-                </Link>
-              </li>
-              <li>
-                <Link href="/demo" className="text-gray-600 hover:text-primary">
-                  Demo Access
+                  Contact Us
                 </Link>
               </li>
             </ul>
@@ -83,7 +65,7 @@ export const Footer = () => {
             <ul className="space-y-2">
               <li className="flex items-center space-x-3">
                 <Mail size={18} className="text-gray-400" />
-                <span className="text-gray-600">support@clouddms.com</span>
+                <span className="text-gray-600">info@docunimbus.io</span>
               </li>
               <li className="flex items-center space-x-3">
                 <Phone size={18} className="text-gray-400" />
@@ -96,7 +78,7 @@ export const Footer = () => {
         <div className="border-t border-gray-200 pt-6 mt-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-500 text-sm mb-4 md:mb-0">
-              &copy; {new Date().getFullYear()} Cloud DMS Project. All rights reserved.
+              &copy; {new Date().getFullYear()} DocuNimbus. All rights reserved.
             </p>
             <div className="flex space-x-6">
               <Link href="/privacy" className="text-gray-500 text-sm hover:text-primary">

@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 
 export const Hero = () => {
   return (
@@ -12,22 +12,26 @@ export const Hero = () => {
         <div className="flex flex-col lg:flex-row items-center py-16 md:py-20 lg:py-24">
           <div className="lg:w-1/2 lg:pr-12 mb-10 lg:mb-0">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6">
-              Cloud-Based Document Management System
+              DocuNimbus – Smart Cloud Document Solution
             </h1>
             
             <p className="text-xl text-gray-600 mb-8">
-              Modernizing document storage and access with an advanced cloud solution. 
-              Enhance security, boost efficiency, and reduce operational costs.
+              Access. Organize. Secure. The future of document management in the cloud.
             </p>
             
             <div className="flex flex-wrap gap-4">
-              <Link href="/features" className="btn-primary flex items-center">
-                <span>Explore Features</span>
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
+              <a 
+                href="https://demo.docunimbus.io" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="btn-primary flex items-center"
+              >
+                <span>Launch Demo</span>
+                <ExternalLink className="ml-2 h-5 w-5" />
+              </a>
               
-              <Link href="/demo" className="btn-outline">
-                Access Demo
+              <Link href="/contact" className="btn-outline">
+                Contact Us
               </Link>
             </div>
           </div>
@@ -35,17 +39,17 @@ export const Hero = () => {
           <div className="lg:w-1/2 relative">
             <div className="rounded-lg overflow-hidden shadow-xl">
               <Image 
-                src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80"
+                src="https://images.unsplash.com/photo-1606857521015-7f9fcf423740?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80"
                 width={600}
                 height={400}
-                alt="Digital documents in the cloud"
+                alt="DocuNimbus cloud document management"
                 className="w-full h-auto object-cover"
                 priority
               />
             </div>
             <div className="absolute -bottom-6 -left-6 bg-primary rounded-lg p-6 text-white shadow-lg max-w-xs hidden md:block">
-              <p className="font-semibold mb-1">Cloud Solution</p>
-              <p className="text-sm opacity-90">Enhanced security and efficiency</p>
+              <p className="font-semibold mb-1">Smart Cloud Solution</p>
+              <p className="text-sm opacity-90">Access from anywhere, anytime</p>
             </div>
           </div>
         </div>

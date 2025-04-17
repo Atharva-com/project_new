@@ -2,14 +2,15 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { ChevronRight, Mail, Phone, MapPin, Send } from "lucide-react";
+import { ChevronRight, Mail, Phone, MapPin, Send, FileText, Users, Clock } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function ContactPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [subject, setSubject] = useState("");
+  const [company, setCompany] = useState("");
   const [message, setMessage] = useState("");
+  const [isInterested, setIsInterested] = useState<string>("full-features");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -24,7 +25,7 @@ export default function ContactPage() {
       // Reset form
       setName("");
       setEmail("");
-      setSubject("");
+      setCompany("");
       setMessage("");
     }, 1500);
   };
@@ -51,8 +52,8 @@ export default function ContactPage() {
             </nav>
             <h1 className="page-title text-center">Contact Us</h1>
             <p className="text-xl text-center text-gray-600 max-w-3xl">
-              Get in touch with our project team for questions, support, or feedback
-              about the Cloud-Based Document Management System.
+              Interested in a full walkthrough or implementation support? 
+              Fill out the form and our team will reach out with more information.
             </p>
           </div>
         </div>
@@ -72,8 +73,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-medium text-gray-800">Email</h3>
-                      <p className="text-gray-600">support@clouddms.com</p>
-                      <p className="text-gray-600">info@clouddms.com</p>
+                      <p className="text-gray-600">info@docunimbus.io</p>
+                      <p className="text-gray-600">support@docunimbus.io</p>
                     </div>
                   </div>
                   
@@ -83,8 +84,8 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <h3 className="font-medium text-gray-800">Phone</h3>
-                      <p className="text-gray-600">Support: (123) 456-7890</p>
-                      <p className="text-gray-600">General: (123) 456-7891</p>
+                      <p className="text-gray-600">Sales: (123) 456-7890</p>
+                      <p className="text-gray-600">Support: (123) 456-7891</p>
                     </div>
                   </div>
                   
@@ -95,26 +96,41 @@ export default function ContactPage() {
                     <div>
                       <h3 className="font-medium text-gray-800">Address</h3>
                       <p className="text-gray-600">
-                        Cloud DMS Project Office<br />
-                        123 Business Park Drive<br />
+                        DocuNimbus Headquarters<br />
+                        123 Cloud Avenue<br />
                         Suite 200<br />
-                        Anytown, ST 12345
+                        San Francisco, CA 94105
                       </p>
                     </div>
                   </div>
                 </div>
                 
                 <div className="border-t border-gray-200 mt-6 pt-6">
-                  <h3 className="font-medium text-gray-800 mb-3">Project Team Hours</h3>
-                  <p className="text-gray-600 mb-1">Monday - Friday: 9:00 AM - 5:00 PM</p>
-                  <p className="text-gray-600">Support available 24/7 for critical issues</p>
+                  <h3 className="font-medium text-gray-800 mb-3">Business Hours</h3>
+                  <p className="text-gray-600 mb-1">Monday - Friday: 9:00 AM - 5:00 PM PT</p>
+                  <p className="text-gray-600">Support available 24/7 for enterprise clients</p>
                 </div>
+              </div>
+              
+              <div className="bg-primary text-white rounded-lg shadow-md p-6 mt-6">
+                <h3 className="text-lg font-semibold mb-4">Try Our Demo</h3>
+                <p className="opacity-90 mb-4">
+                  Experience DocuNimbus firsthand with our interactive demo environment.
+                </p>
+                <a 
+                  href="https://demo.docunimbus.io" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="bg-white text-primary hover:bg-gray-100 px-4 py-2 rounded-md font-medium transition-colors inline-flex items-center text-sm"
+                >
+                  Launch Demo
+                </a>
               </div>
             </div>
             
             <div className="md:col-span-2">
               <div className="bg-white rounded-lg shadow-md p-6 border border-gray-100">
-                <h2 className="text-xl font-semibold mb-6 text-gray-800">Send Us a Message</h2>
+                <h2 className="text-xl font-semibold mb-6 text-gray-800">Request More Information</h2>
                 
                 {success ? (
                   <motion.div
@@ -127,16 +143,16 @@ export default function ContactPage() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <h3 className="text-lg font-medium text-green-800 mb-2">Message Sent Successfully!</h3>
+                    <h3 className="text-lg font-medium text-green-800 mb-2">Request Received!</h3>
                     <p className="text-green-700">
-                      Thank you for contacting us. A member of our team will respond to your
-                      inquiry as soon as possible.
+                      Thank you for your interest in DocuNimbus. A member of our team will contact you
+                      within 24 hours with the information you requested.
                     </p>
                     <button
                       onClick={() => setSuccess(false)}
                       className="mt-4 text-sm font-medium text-green-700 hover:text-green-500"
                     >
-                      Send another message
+                      Submit another request
                     </button>
                   </motion.div>
                 ) : (
@@ -159,7 +175,7 @@ export default function ContactPage() {
                       
                       <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                          Email Address
+                          Work Email
                         </label>
                         <input
                           type="email"
@@ -174,32 +190,95 @@ export default function ContactPage() {
                     </div>
                     
                     <div>
-                      <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
-                        Subject
+                      <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">
+                        Company Name
                       </label>
                       <input
                         type="text"
-                        id="subject"
-                        value={subject}
-                        onChange={(e) => setSubject(e.target.value)}
+                        id="company"
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                        placeholder="How can we help you?"
+                        placeholder="Acme Inc."
                         required
                       />
                     </div>
                     
                     <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        I'm interested in:
+                      </label>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div className="flex items-center">
+                          <input
+                            type="radio"
+                            id="full-features"
+                            name="interest"
+                            value="full-features"
+                            checked={isInterested === "full-features"}
+                            onChange={() => setIsInterested("full-features")}
+                            className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+                          />
+                          <label htmlFor="full-features" className="ml-2 block text-sm text-gray-700">
+                            Complete feature list
+                          </label>
+                        </div>
+                        <div className="flex items-center">
+                          <input
+                            type="radio"
+                            id="pricing"
+                            name="interest"
+                            value="pricing"
+                            checked={isInterested === "pricing"}
+                            onChange={() => setIsInterested("pricing")}
+                            className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+                          />
+                          <label htmlFor="pricing" className="ml-2 block text-sm text-gray-700">
+                            Pricing information
+                          </label>
+                        </div>
+                        <div className="flex items-center">
+                          <input
+                            type="radio"
+                            id="implementation"
+                            name="interest"
+                            value="implementation"
+                            checked={isInterested === "implementation"}
+                            onChange={() => setIsInterested("implementation")}
+                            className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+                          />
+                          <label htmlFor="implementation" className="ml-2 block text-sm text-gray-700">
+                            Implementation process
+                          </label>
+                        </div>
+                        <div className="flex items-center">
+                          <input
+                            type="radio"
+                            id="consultation"
+                            name="interest"
+                            value="consultation"
+                            checked={isInterested === "consultation"}
+                            onChange={() => setIsInterested("consultation")}
+                            className="h-4 w-4 text-primary focus:ring-primary border-gray-300"
+                          />
+                          <label htmlFor="consultation" className="ml-2 block text-sm text-gray-700">
+                            Schedule a consultation
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div>
                       <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                        Message
+                        Additional Information
                       </label>
                       <textarea
                         id="message"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
-                        rows={6}
+                        rows={4}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                        placeholder="Please provide details about your inquiry or question..."
-                        required
+                        placeholder="Tell us about your specific needs or questions..."
                       ></textarea>
                     </div>
                     
@@ -236,7 +315,7 @@ export default function ContactPage() {
                         ) : (
                           <>
                             <Send className="mr-2 h-5 w-5" />
-                            Send Message
+                            Submit Request
                           </>
                         )}
                       </button>
@@ -251,82 +330,78 @@ export default function ContactPage() {
 
       <section className="page-section bg-gray-50">
         <div className="container-custom">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="section-title">Frequently Asked Questions</h2>
+          <div className="max-w-3xl mx-auto text-center mb-12">
+            <h2 className="section-title">Why Choose DocuNimbus?</h2>
             <p className="text-lg text-gray-600 mb-8">
-              Find answers to common questions or contact us for specific inquiries.
+              Our cloud document solution offers comprehensive features that go beyond what you see in the demo.
             </p>
-            
-            <div className="grid md:grid-cols-2 gap-6 text-left">
-              <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">What types of support are available?</h3>
-                <p className="text-gray-600">
-                  We provide email, phone, and in-person support options for all aspects of the
-                  Cloud DMS implementation and usage.
-                </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+              <div className="bg-primary/10 p-3 rounded-full inline-flex mb-4">
+                <FileText className="h-6 w-6 text-primary" />
               </div>
-              
-              <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">How quickly can I expect a response?</h3>
-                <p className="text-gray-600">
-                  For standard inquiries, we respond within 24 business hours. Critical issues
-                  are addressed within 2-4 hours.
-                </p>
-              </div>
-              
-              <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">Can I request custom training?</h3>
-                <p className="text-gray-600">
-                  Yes, we offer customized training sessions for departments with specific needs.
-                  Contact us to schedule a session.
-                </p>
-              </div>
-              
-              <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-100">
-                <h3 className="text-lg font-semibold mb-2 text-gray-800">How do I report technical issues?</h3>
-                <p className="text-gray-600">
-                  Technical issues can be reported via our support email, phone line, or
-                  through the in-app support ticket system.
-                </p>
-              </div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-800">Complete Feature Set</h3>
+              <p className="text-gray-600">
+                Our full implementation includes advanced workflows, AI-powered document processing, 
+                and enterprise-grade integrations not shown in the demo.
+              </p>
             </div>
             
-            <div className="mt-8">
-              <Link href="/training#faq" className="text-primary hover:text-primary/80 font-medium">
-                View all FAQs →
-              </Link>
+            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+              <div className="bg-primary/10 p-3 rounded-full inline-flex mb-4">
+                <Users className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-800">Dedicated Support</h3>
+              <p className="text-gray-600">
+                Get personalized implementation assistance, training for your team, 
+                and ongoing technical support from our document management experts.
+              </p>
+            </div>
+            
+            <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+              <div className="bg-primary/10 p-3 rounded-full inline-flex mb-4">
+                <Clock className="h-6 w-6 text-primary" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-800">Rapid Implementation</h3>
+              <p className="text-gray-600">
+                Our streamlined implementation process gets your organization up and running 
+                with DocuNimbus in weeks, not months, with minimal disruption.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-white py-16">
+      <section className="bg-primary text-white py-16">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6 text-gray-800">Join Our Newsletter</h2>
-            <p className="text-gray-600 mb-8">
-              Stay updated on the Cloud DMS implementation project, upcoming training sessions,
-              and system enhancements.
+            <h2 className="text-2xl md:text-3xl font-bold mb-6">Ready to Transform Your Document Management?</h2>
+            <p className="text-lg opacity-90 mb-8">
+              Try our interactive demo today or contact us for a personalized consultation.
             </p>
-            <form className="max-w-md mx-auto">
-              <div className="flex">
-                <input
-                  type="email"
-                  className="w-full px-3 py-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                  placeholder="Your email address"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="bg-primary text-white px-4 py-3 rounded-r-md hover:bg-primary/90 transition-colors focus:outline-none"
-                >
-                  Subscribe
-                </button>
-              </div>
-              <p className="text-xs text-gray-500 mt-2">
-                We respect your privacy. Unsubscribe at any time.
-              </p>
-            </form>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <a 
+                href="https://demo.docunimbus.io" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-white text-primary hover:bg-gray-100 px-6 py-3 rounded-md font-medium transition-colors"
+              >
+                Launch Demo
+              </a>
+              <button
+                onClick={() => {
+                  const contactForm = document.getElementById('name');
+                  if (contactForm) {
+                    contactForm.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="bg-primary-foreground/20 hover:bg-primary-foreground/30 border border-white/30 text-white px-6 py-3 rounded-md font-medium transition-colors"
+              >
+                Contact Us
+              </button>
+            </div>
           </div>
         </div>
       </section>

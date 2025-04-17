@@ -32,14 +32,14 @@ export const viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "Cloud DMS",
-    template: "%s | Cloud DMS",
+    default: "DocuNimbus",
+    template: "%s | DocuNimbus",
   },
-  description: "Cloud-Based Document Management System Implementation Project",
-  applicationName: "Cloud DMS",
-  keywords: ["document management", "cloud storage", "DMS", "document security", "file management"],
-  authors: [{ name: "Ranjith Reddy Kondapur" }],
-  creator: "Cumberlands University",
+  description: "Smart Cloud Document Solution - Access. Organize. Secure.",
+  applicationName: "DocuNimbus",
+  keywords: ["document management", "cloud storage", "DMS", "document security", "file management", "cloud documents"],
+  authors: [{ name: "DocuNimbus Team" }],
+  creator: "DocuNimbus",
   icons: {
     icon: [
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Cloud DMS",
+    title: "DocuNimbus",
   },
   formatDetection: {
     telephone: false,
@@ -77,7 +77,7 @@ export default function RootLayout({
             <Footer />
             <Branding />
           </ErrorBoundaryWrapper>
-          <AnalyticsTracker siteKey="cloud-dms" />
+          <AnalyticsTracker siteKey="docunimbus" />
         </DOMInspector>
       </body>
     </html>
