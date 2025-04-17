@@ -2,14 +2,11 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight, FileText, Video, Download, Plus, Minus } from "lucide-react";
-
 export const metadata = {
-  title: "Training & Support | Cloud DMS",
+  title: "Training & Support | Cloud DMS"
 };
-
 export default function TrainingPage() {
-  return (
-    <>
+  return <>
       <section className="bg-gray-50 py-12">
         <div className="container-custom">
           <div className="flex flex-col items-center">
@@ -208,12 +205,7 @@ export default function TrainingPage() {
           <div className="grid md:grid-cols-2 gap-8 mb-8">
             <div className="card-custom p-0 overflow-hidden">
               <div className="aspect-video relative bg-gray-800">
-                <Image 
-                  src="https://images.unsplash.com/photo-1518481612222-68bbe828ecd1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80"
-                  alt="System overview tutorial thumbnail"
-                  fill
-                  className="object-cover opacity-60"
-                />
+                <Image src="https://images.unsplash.com/photo-1518481612222-68bbe828ecd1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="System overview tutorial thumbnail" fill className="object-cover opacity-60" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-16 h-16 bg-primary/90 rounded-full flex items-center justify-center cursor-pointer hover:bg-primary transition-colors">
                     <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[16px] border-l-white border-b-[8px] border-b-transparent ml-1"></div>
@@ -234,12 +226,7 @@ export default function TrainingPage() {
 
             <div className="card-custom p-0 overflow-hidden">
               <div className="aspect-video relative bg-gray-800">
-                <Image 
-                  src="https://images.unsplash.com/photo-1586282391129-76a2d2997467?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80"
-                  alt="Document upload and management tutorial thumbnail"
-                  fill
-                  className="object-cover opacity-60"
-                />
+                <Image src="https://picsum.photos/200" alt="Document upload and management tutorial thumbnail" fill className="object-cover opacity-60" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-16 h-16 bg-primary/90 rounded-full flex items-center justify-center cursor-pointer hover:bg-primary transition-colors">
                     <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[16px] border-l-white border-b-[8px] border-b-transparent ml-1"></div>
@@ -260,12 +247,7 @@ export default function TrainingPage() {
 
             <div className="card-custom p-0 overflow-hidden">
               <div className="aspect-video relative bg-gray-800">
-                <Image 
-                  src="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80"
-                  alt="Advanced search techniques tutorial thumbnail"
-                  fill
-                  className="object-cover opacity-60"
-                />
+                <Image src="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Advanced search techniques tutorial thumbnail" fill className="object-cover opacity-60" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-16 h-16 bg-primary/90 rounded-full flex items-center justify-center cursor-pointer hover:bg-primary transition-colors">
                     <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[16px] border-l-white border-b-[8px] border-b-transparent ml-1"></div>
@@ -286,12 +268,7 @@ export default function TrainingPage() {
 
             <div className="card-custom p-0 overflow-hidden">
               <div className="aspect-video relative bg-gray-800">
-                <Image 
-                  src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80"
-                  alt="Collaboration and sharing tutorial thumbnail"
-                  fill
-                  className="object-cover opacity-60"
-                />
+                <Image src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Collaboration and sharing tutorial thumbnail" fill className="object-cover opacity-60" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="w-16 h-16 bg-primary/90 rounded-full flex items-center justify-center cursor-pointer hover:bg-primary transition-colors">
                     <div className="w-0 h-0 border-t-[8px] border-t-transparent border-l-[16px] border-l-white border-b-[8px] border-b-transparent ml-1"></div>
@@ -547,6 +524,5 @@ export default function TrainingPage() {
           </div>
         </div>
       </section>
-    </>
-  );
+    </>;
 }

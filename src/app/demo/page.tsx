@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight, LogIn, ExternalLink } from "lucide-react";
 import { motion } from "framer-motion";
-
 export default function DemoPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,11 +12,10 @@ export default function DemoPage() {
   const [company, setCompany] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
-
   const handleDemoRequest = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
@@ -29,9 +27,7 @@ export default function DemoPage() {
       setCompany("");
     }, 1500);
   };
-
-  return (
-    <>
+  return <>
       <section className="bg-gray-50 py-12">
         <div className="container-custom">
           <div className="flex flex-col items-center">
@@ -73,36 +69,19 @@ export default function DemoPage() {
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                     Email Address
                   </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    placeholder="your.email@company.com"
-                    required
-                  />
+                  <input type="email" id="email" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="your.email@company.com" required />
                 </div>
                 
                 <div>
                   <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                     Password
                   </label>
-                  <input
-                    type="password"
-                    id="password"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    placeholder="••••••••"
-                    required
-                  />
+                  <input type="password" id="password" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="••••••••" required />
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
-                    />
+                    <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded" />
                     <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
                       Remember me
                     </label>
@@ -116,10 +95,7 @@ export default function DemoPage() {
                 </div>
                 
                 <div>
-                  <button
-                    type="submit"
-                    className="w-full flex justify-center items-center btn-primary"
-                  >
+                  <button type="submit" className="w-full flex justify-center items-center btn-primary">
                     <LogIn className="mr-2 h-5 w-5" />
                     Sign In
                   </button>
@@ -144,12 +120,13 @@ export default function DemoPage() {
                 access to our interactive demo environment with sample data.
               </p>
               
-              {success ? (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-green-50 border border-green-200 rounded-md p-6 text-center"
-                >
+              {success ? <motion.div initial={{
+              opacity: 0,
+              y: 20
+            }} animate={{
+              opacity: 1,
+              y: 0
+            }} className="bg-green-50 border border-green-200 rounded-md p-6 text-center">
                   <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
                     <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -159,83 +136,45 @@ export default function DemoPage() {
                   <p className="text-green-700">
                     Thank you for your interest! We'll send your demo login credentials to your email shortly.
                   </p>
-                  <button
-                    onClick={() => setSuccess(false)}
-                    className="mt-4 text-sm font-medium text-green-700 hover:text-green-500"
-                  >
+                  <button onClick={() => setSuccess(false)} className="mt-4 text-sm font-medium text-green-700 hover:text-green-500">
                     Submit another request
                   </button>
-                </motion.div>
-              ) : (
-                <form onSubmit={handleDemoRequest} className="space-y-4">
+                </motion.div> : <form onSubmit={handleDemoRequest} className="space-y-4">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                       Full Name
                     </label>
-                    <input
-                      type="text"
-                      id="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                      placeholder="John Doe"
-                      required
-                    />
+                    <input type="text" id="name" value={name} onChange={e => setName(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="John Doe" required />
                   </div>
                   
                   <div>
                     <label htmlFor="demo-email" className="block text-sm font-medium text-gray-700 mb-1">
                       Work Email Address
                     </label>
-                    <input
-                      type="email"
-                      id="demo-email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                      placeholder="your.email@company.com"
-                      required
-                    />
+                    <input type="email" id="demo-email" value={email} onChange={e => setEmail(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="your.email@company.com" required />
                   </div>
                   
                   <div>
                     <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">
                       Company Name
                     </label>
-                    <input
-                      type="text"
-                      id="company"
-                      value={company}
-                      onChange={(e) => setCompany(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                      placeholder="Acme Inc."
-                      required
-                    />
+                    <input type="text" id="company" value={company} onChange={e => setCompany(e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Acme Inc." required />
                   </div>
                   
                   <div>
-                    <button
-                      type="submit"
-                      className="w-full btn-primary flex justify-center items-center"
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? (
-                        <>
+                    <button type="submit" className="w-full btn-primary flex justify-center items-center" disabled={isSubmitting}>
+                      {isSubmitting ? <>
                           <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                           </svg>
                           Processing...
-                        </>
-                      ) : (
-                        <>
+                        </> : <>
                           Request Demo Access
-                        </>
-                      )}
+                        </>}
                     </button>
                   </div>
-                </form>
-              )}
+                </form>}
             </div>
           </div>
         </div>
@@ -253,17 +192,9 @@ export default function DemoPage() {
           
           <div className="bg-white rounded-lg overflow-hidden shadow-md mb-8">
             <div className="relative h-[400px] md:h-[500px]">
-              <Image 
-                src="https://images.unsplash.com/photo-1616511011080-263aadad714b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1280&q=80"
-                fill
-                alt="Cloud DMS Interface Preview"
-                className="object-cover"
-              />
+              <Image src="https://picsum.photos/200" fill alt="Cloud DMS Interface Preview" className="object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end justify-center p-6">
-                <a 
-                  href="#"
-                  className="bg-white text-primary hover:bg-gray-100 px-6 py-3 rounded-md font-medium transition-colors inline-flex items-center"
-                >
+                <a href="#" className="bg-white text-primary hover:bg-gray-100 px-6 py-3 rounded-md font-medium transition-colors inline-flex items-center">
                   <ExternalLink className="mr-2 h-5 w-5" />
                   Watch Interface Tour
                 </a>
@@ -342,6 +273,5 @@ export default function DemoPage() {
           </div>
         </div>
       </section>
-    </>
-  );
+    </>;
 }
