@@ -217,14 +217,14 @@ export default function FeaturesPage() {
             </h2>
             <p className="text-lg md:text-xl opacity-90 mb-8">
               Experience the benefits of our Cloud-Based Document Management System firsthand.
-              Request a demo or contact our project team for more information.
+              Request a demo or explore our comprehensive documentation.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link href="/demo" className="bg-white text-primary hover:bg-gray-100 px-6 py-3 rounded-md font-medium transition-colors">
                 Access Demo
               </Link>
-              <Link href="/contact" className="bg-primary-foreground/20 hover:bg-primary-foreground/30 border border-white/30 text-white px-6 py-3 rounded-md font-medium transition-colors">
-                Contact Project Team
+              <Link href="/training" className="bg-primary-foreground/20 hover:bg-primary-foreground/30 border border-white/30 text-white px-6 py-3 rounded-md font-medium transition-colors">
+                View Training Resources
               </Link>
             </div>
           </div>

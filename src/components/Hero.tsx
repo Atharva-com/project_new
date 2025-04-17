@@ -44,8 +44,8 @@ export const Hero = () => {
               />
             </div>
             <div className="absolute -bottom-6 -left-6 bg-primary rounded-lg p-6 text-white shadow-lg max-w-xs hidden md:block">
-              <p className="font-semibold mb-1">Implementation Timeline</p>
-              <p className="text-sm opacity-90">Full deployment within 4 months</p>
+              <p className="font-semibold mb-1">Cloud Solution</p>
+              <p className="text-sm opacity-90">Enhanced security and efficiency</p>
             </div>
           </div>
         </div>

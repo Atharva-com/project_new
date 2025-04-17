@@ -40,8 +40,8 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/timeline" className="text-gray-600 hover:text-primary">
-                  Implementation Timeline
+                <Link href="/features" className="text-gray-600 hover:text-primary">
+                  System Features
                 </Link>
               </li>
               <li>

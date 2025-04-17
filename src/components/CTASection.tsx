@@ -17,8 +17,8 @@ export const CTASection = () => {
             <Link href="/demo" className="bg-white text-primary hover:bg-gray-100 px-6 py-3 rounded-md font-medium transition-colors">
               Access Demo
             </Link>
-            <Link href="/contact" className="bg-primary-foreground/20 hover:bg-primary-foreground/30 border border-white/30 text-white px-6 py-3 rounded-md font-medium transition-colors">
-              Contact Project Team
+            <Link href="/features" className="bg-primary-foreground/20 hover:bg-primary-foreground/30 border border-white/30 text-white px-6 py-3 rounded-md font-medium transition-colors">
+              Explore Features
             </Link>
           </div>
         </div>

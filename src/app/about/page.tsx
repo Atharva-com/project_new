@@ -159,8 +159,8 @@ export default function AboutPage() {
               <Link href="/features" className="btn-primary">
                 See All Features
               </Link>
-              <Link href="/timeline" className="btn-outline">
-                View Timeline
+              <Link href="/demo" className="btn-outline">
+                Access Demo
               </Link>
             </div>
           </div>
