@@ -75,7 +75,7 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
-            <Branding />
+            {/* <Branding /> */}
           </ErrorBoundaryWrapper>
           <AnalyticsTracker siteKey="docunimbus" />
         </DOMInspector>
